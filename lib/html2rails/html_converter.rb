@@ -43,6 +43,26 @@ module Html2rails
               child['html2rails-txt'] = "<%= image_tag(\"#{src}\") %>"
             end
 
+          when 'link'
+            attributes = {}
+            child.attributes.each do |attr,value|
+              attributes[attr] = value
+            end
+            href = attributes.delete 'href'
+
+            attributes.delete 'rel'
+            child.name = 'html2rails-link'
+            attributes.each do |k,_|
+              child.delete k
+            end
+
+            if attributes.length > 0
+              child['html2rails-txt'] = "<%= stylesheet_link_tag(\"#{href}\", #{attributes.map{|k,v| ":"+k+" => \""+v+"\""}.join(', ')}) %>"
+            else
+
+              child['html2rails-txt'] = "<%= stylesheet_link_tag(\"#{href}\") %>"
+            end
+
         end
       end
     end
