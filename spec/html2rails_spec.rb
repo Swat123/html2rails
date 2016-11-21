@@ -73,4 +73,16 @@ describe Html2rails do
 </html>')
   end
 
+
+  it "should convert to slim as well" do
+    require 'html2slim'
+    expect(HTML2Slim.convert!(Html2rails.convert!('<html><head><link rel="stylesheet" href="styles.css"></head><body></body></html>'),:erb).to_s)
+        .to eql(
+'doctype html
+html[xmlns="http://www.w3.org/1999/xhtml"]
+  head
+    meta[http-equiv="Content-Type" content="text/html; charset=US-ASCII"]
+    = stylesheet_link_tag("styles.css")
+  body')
+  end
 end
